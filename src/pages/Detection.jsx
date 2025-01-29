@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 
-const socket = io("http://13.211.59.64:5000");
+const socket = io("https://uas-backend-apli-ai.my.id");
 
 socket.on("connect", () => {
   console.log("Connected to server");
