@@ -5,8 +5,10 @@ const socket = io("http://13.211.59.64:5000");
 
 socket.on("connect", () => {
   console.log("Connected to server");
-});
 
+  const testFrame = "data:image/jpeg;base64,<your_base64_encoded_image>";
+  socket.emit("process_frame", testFrame);
+});
 const Detection = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -36,7 +38,7 @@ const Detection = () => {
         const frame = canvas.toDataURL("image/jpeg");
         socket.emit("process_frame", frame);
       }
-    }, 200);
+    }, 500);
 
     return () => clearInterval(interval);
   }, []);
@@ -68,7 +70,7 @@ const Detection = () => {
         context.strokeStyle = "red";
         context.lineWidth = 2;
         context.strokeRect(box.x, box.y, box.width, box.height);
-        context.font = "20px Arial";
+        context.font = "12px Arial";
         context.fillStyle = "red";
         context.fillText(label, box.x, box.y - 5);
       });
