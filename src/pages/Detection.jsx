@@ -31,6 +31,7 @@ const Detection = () => {
       const context = canvas.getContext("2d");
 
       if (video && context) {
+        // Atur ukuran canvas agar sesuai dengan video
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -67,21 +68,23 @@ const Detection = () => {
     if (detections.length > 0) {
       detections.forEach((box) => {
         const label = labels[box.class] || "Unknown";
-        context.strokeStyle = "red";
-        context.lineWidth = 2;
+        context.strokeStyle = "#ff0000";
+        context.lineWidth = 3;
         context.strokeRect(box.x, box.y, box.width, box.height);
-        context.font = "12px Arial";
-        context.fillStyle = "red";
-        context.fillText(label, box.x, box.y - 5);
+        context.font = "bold 16px Arial";
+        context.fillStyle = "#ff0000";
+        context.fillText(label, box.x, box.y - 10);
       });
     }
   }, [detections]);
 
   return (
-    <div>
-      <h1>Deteksi Kerusakan Jalan</h1>
-      <video ref={videoRef} style={{ display: "none" }} />
-      <canvas ref={canvasRef} style={{ border: "1px solid black" }} />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-5">
+      <h1 className="text-2xl font-bold mb-4">Deteksi Kerusakan Jalan</h1>
+      <div className="relative border-4 border-gray-700 rounded-lg overflow-hidden shadow-lg w-full max-w-[1000px]">
+        <video ref={videoRef} className="hidden" />
+        <canvas ref={canvasRef} className="w-full h-auto" />
+      </div>
     </div>
   );
 };
