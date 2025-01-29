@@ -11,16 +11,23 @@ const Detection = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [detections, setDetections] = useState([]);
+  const [facingMode, setFacingMode] = useState("environment"); // Default ke kamera belakang
 
-  useEffect(() => {
+  const startCamera = (mode) => {
     navigator.mediaDevices
-      .getUserMedia({ video: true })
+      .getUserMedia({ video: { facingMode: mode } })
       .then((stream) => {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
       })
       .catch((err) => console.error("Error accessing webcam: ", err));
-  }, []);
+  };
+
+  useEffect(() => {
+    startCamera(facingMode);
+  }, [facingMode]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,7 +36,6 @@ const Detection = () => {
       const context = canvas.getContext("2d");
 
       if (video && context) {
-        // Atur ukuran canvas agar sesuai dengan video
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -79,8 +85,16 @@ const Detection = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-5">
       <h1 className="text-2xl font-bold mb-4">Deteksi Kerusakan Jalan</h1>
+      <button
+        onClick={() =>
+          setFacingMode((prev) => (prev === "user" ? "environment" : "user"))
+        }
+        className="mb-4 px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+      >
+        Flip Camera
+      </button>
       <div className="relative border-4 border-gray-700 rounded-lg overflow-hidden shadow-lg w-full max-w-[1000px]">
-        <video ref={videoRef} className="hidden" />
+        <video ref={videoRef} className="hidden" playsInline />
         <canvas ref={canvasRef} className="w-full h-auto" />
       </div>
     </div>
