@@ -31,3 +31,8 @@ Proyek ini bertujuan untuk mendeteksi kerusakan jalan, seperti retakan, kerusaka
 3. **Jalankan server**
    ```bash
    npm run dev
+
+Contributor:
+Dionisius Reinaldo
+Theofilus Dewa
+Mario Anugraha
